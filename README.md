@@ -1,12 +1,6 @@
-# python-template
-A simple template to bootstrap Python packages.
+# Python ML template
+A simple template to bootstrap Python machine learning projects, maintaining a standard structure.
 It should be slightly faster than starting from scratch each time.
-
-## Features
-
-- 🍨 **As vanilla as it gets** - Pure standard python, including `setuptools` as build tool.
-- ✏️ **One config file** - The `pyproject.toml` handles everything: dependencies, tools, versioning.
-- 🏷️ **Dynamic versioning** - The package version is dynamically set at build time, taken from `package_name.__version__`
 
 ## Getting Started
 
@@ -42,7 +36,7 @@ From a python environment, or any other means, this script can be launched as ea
     # Install the bare minimum, editable is usually preferred when developing
    pip install -e .
    # Install extras
-   pip install -e .[dev|docs|test]
+   pip install -e .[dev,docs,test]
    ```
 
 
@@ -59,12 +53,14 @@ snippet in your `settings.json` file to format and sort imports on save.
 
 ```json
 {
-    "python.formatting.provider": "black",
     "[python]": {
+        "diffEditor.ignoreTrimWhitespace": false,
+        "editor.wordBasedSuggestions": "off",
         "editor.formatOnSave": true,
         "editor.codeActionsOnSave": {
-            "source.organizeImports": true
+            "source.organizeImports": "explicit"
         },
+        "editor.defaultFormatter": "charliermarsh.ruff",
     },
 }
 ```
