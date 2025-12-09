@@ -13,8 +13,14 @@ def query_params(validate: bool = True):
         while not (name := input("What is your name? ")):
             print("Please enter your name, or press Ctrl+C to exit.")
 
-        while not (email := input("What is your email address? ")):
-            print("Please enter your email address, or press Ctrl+C to exit.")
+        while True:
+            email = input("What is your email address? (Press Enter to skip) ")
+            if not email:
+                break
+            if not re.match(r"[^@]+@[^@]+\.[^@]+", email):
+                print("Invalid email format. Please use a valid email or press Enter to skip.")
+            else:
+                break
 
         while not (project_name := input("What should we call the project? (e.g., scikit-learn) ")):
             print("Please enter a project name, or press Ctrl+C to exit.")
