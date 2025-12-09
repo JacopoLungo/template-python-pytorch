@@ -96,7 +96,8 @@ def main():
         data = update_toml_property(data, "description", f'"{project_description}"')
         data = update_toml_property(data, "requires-python", f'"{py_version}"')
         data = update_toml_property(data, "authors", f'[{{name = "{name}", email = "{email}"}}]')
-        data = update_toml_property(data, "version", f'{{attr = "{package_name}.__version__"}}')
+        data = update_toml_property(data, "path", f'"src/{package_name}/version.py"')
+        data = update_toml_property(data, "packages", f'["src/{package_name}"]')
 
         print("Updating license...")
         update_license(name)

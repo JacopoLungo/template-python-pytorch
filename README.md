@@ -1,5 +1,5 @@
 # Python ML template
-A simple template to bootstrap Python machine learning projects, maintaining a standard structure.
+A simple template to bootstrap Python machine learning projects, maintaining a standard structure using uv.
 It should be slightly faster than starting from scratch each time.
 
 ## Getting Started
@@ -14,33 +14,46 @@ To use this template, follow these steps:
    git clone https://github.com/your-username/your-repo.git
    ```
 
-3. Navigate to the project directory. Optional but recommended: create and activate a Python virtual environment to isolate your project's dependencies.
+3. Install uv if you haven't already. On macOS and Linux you can install it using:
+
+   ```bash
+   curl -LsSf https://astral.sh/uv/install.sh | sh
+   ```
+
+   For more installation options, visit [uv documentation](https://docs.astral.sh/uv/getting-started/installation/).
+
+4. Navigate to the project directory.
 E.g.:
 
    ```bash
    cd your-repo
-   python -m venv .venv
-   source .venv/bin/activate  # On Windows, use .venv\Scripts\activate
    ```
+
 5. The template provides a simple "self-destructing" initialization script, `init.py`, that automatically provides the necessary information to generate a fully functional python package (project name, author, ...).
-From a python environment, or any other means, this script can be launched as easily as:
+With uv this script can be launched as easily as:
 
     ```bash
     # launch and follow the prompts
-    python init.py
+    uv run init.py
     ```
 
 6. Install the required dependencies:
 
    ```bash
-    # Install the bare minimum, editable is usually preferred when developing
-   pip install -e .
-   # Install extras
-   pip install -e .[dev,docs,test]
+    # Install the bare minimum. Project is installed in editable mode by default
+   uv sync
+   # Install all extras
+   uv sync --all-extras
    ```
 
+7. Add custom dependencies:
+    E.g.
 
-7. You're good to go! Of course, you can further customize it to your liking.
+    ```bash
+    uv add "numpy>=1.21.0,< 2.0.0"
+    ```
+
+8. You're good to go! Of course, you can further customize it to your liking.
 
 > **Note**
 >

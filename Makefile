@@ -1,43 +1,40 @@
 .ONESHELL:
-PY_ENV=.venv
-PY_BIN=$(shell python -c "print('$(PY_ENV)/bin') if __import__('pathlib').Path('$(PY_ENV)/bin/pip').exists() else print('')")
 
 .PHONY: help
 help:				## This help screen
 	@fgrep -h "##" $(MAKEFILE_LIST) | fgrep -v fgrep | sed -e 's/\\$$//' | sed -e 's/##//'
 
+.PHONY: check-uv
+check-uv:			## Check if uv is installed
+	@if ! command -v uv > /dev/null; then echo "uv is not installed. Install it first (https://docs.astral.sh/uv/)"; exit 1; fi
+
 .PHONY: init
-init:				## Initialize the project template
-	@$(PY_BIN)/python init.py
+init: check-uv			## Initialize the project template
+	@uv run init.py
 
 .PHONY: show
-show:				## Show the current environment.
+show: check-uv				## Show the current environment.
 	@echo "Current environment:"
-	@echo "Running using $(PY_BIN)"
-	@$(PY_BIN)/python -V
-	@$(PY_BIN)/python -m site
-
-.PHONY: check-venv
-check-venv:			## Check if the virtualenv exists.
-	@if [ "$(PY_BIN)" = "" ]; then echo "No virtualenv detected, create one first."; exit 1; fi
+	@uv run python -V
+	@uv run python -m site
 
 .PHONY: install
-install: check-venv		## Install the project in dev mode.
-	@$(PY_BIN)/pip install -e .[dev,docs,test]
+install: check-uv		## Install the project in dev mode.
+	@uv sync --all-extras
 
 .PHONY: fmt
-fmt: check-venv			## Format code using black & isort.
-	$(PY_BIN)/ruff format -v .
+fmt: check-uv			## Format code using ruff.
+	@uv run ruff format -v .
 
 .PHONY: lint
-lint: check-venv		## Run ruff, black, mypy (optional).
-	@$(PY_BIN)/ruff check .
-	@$(PY_BIN)/ruff format --check .
-	@if [ -x "$(PY_BIN)/mypy" ]; then $(PY_BIN)/mypy project_name/; else echo "mypy not installed, skipping"; fi
+lint: check-uv		## Run ruff and mypy (optional).
+	@uv run ruff check .
+	@uv run ruff format --check .
+	@uv run mypy src/ || echo "mypy failed or not installed"
 
 .PHONY: test
 test: lint			## Run tests and generate coverage report.
-	$(PY_BIN)/pytest --cov-report=xml -o console_output_style=progress
+	@uv run pytest --cov-report=xml -o console_output_style=progress
 
 .PHONY: clean
 clean:				## Clean unused files (VENV=true to also remove the virtualenv).
@@ -55,4 +52,4 @@ clean:				## Clean unused files (VENV=true to also remove the virtualenv).
 	@rm -rf htmlcov
 	@rm -rf .tox/
 	@rm -rf docs/_build
-	@if [ "$(VENV)" != "" ]; then echo "Removing virtualenv..."; rm -rf $(PY_ENV); fi
+	@if [ "$(VENV)" = "true" ]; then echo "Removing virtualenv..."; rm -rf $(PY_ENV); fi

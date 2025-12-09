@@ -1,6 +1,10 @@
 [build-system]
-requires = ["setuptools", "setuptools-scm"]
-build-backend = "setuptools.build_meta"
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+# required if project and package name differ
+[tool.hatch.build.targets.wheel]
+packages = ["src/project_name"]
 
 [project]
 name = "project-name"
@@ -15,11 +19,11 @@ classifiers = [
 ]
 
 # Dynamic metadata allow to assign the version number to the package at build time.
-# The location of the version number is specified in the [tool.setuptools.dynamic] section.
-dynamic = ["version", "dependencies"]
+# The location of the version number is specified in the [tool.hatch.version] section.
+dynamic = ["version"]
 
 # Optional dependencies, use this to include everything that the project needs to run in development.
-# These can be installed by specifying for instance `pip install -e .[dev|docs|test]`
+# These can be installed by specifying for instance `uv sync --extra dev` o 'uv sync --all-extras'.
 # Here the loose versioning policy is usually preferred.
 [project.optional-dependencies]
 # Add development dependencies here
@@ -39,13 +43,11 @@ test = [
     "pytest-cov >= 5.0.0, < 6.0",
 ]
 
-[tool.setuptools]
-package-dir = { "" = "src" }
-
-[tool.setuptools.dynamic]
-version = { attr = "package_name.__version__" }
-dependencies = {file = "requirements.txt"}
+[tool.hatch.version]
+path = "src/project_name/version.py"
 
 [tool.ruff]
 line-length = 119
+
+[tool.ruff.lint]
 select = ["E", "F", "UP"]
