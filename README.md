@@ -37,23 +37,14 @@ With uv this script can be launched as easily as:
     uv run init.py
     ```
 
-6. Install the required dependencies:
-
-   ```bash
-    # Install the bare minimum. Project is installed in editable mode by default
-   uv sync
-   # Install all extras
-   uv sync --all-extras
-   ```
-
-7. Add custom dependencies:
+6. Add custom dependencies:
     E.g.
 
     ```bash
     uv add "numpy>=1.21.0,< 2.0.0"
     ```
 
-8. You're good to go! Of course, you can further customize it to your liking.
+7. You're good to go! Of course, you can further customize it to your liking.
 
 > **Note**
 >
