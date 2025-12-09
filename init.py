@@ -112,6 +112,9 @@ def main():
         rename_package(package_name, root="src")
         rename_package(package_name, root="tests")
         os.rename("src/project_name", f"src/{package_name}")
+        
+        print("Syncing uv...")
+        os.system("uv sync --all-extras")
 
         print("Your project is ready. Deleting myself from existence, farewell!")
         os.remove(__file__)
